@@ -10,6 +10,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import SignInSide from "./routes/login";
+import Store from "./routes/store";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <SignInSide />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/store",
+    element: <Store />,
     errorElement: <ErrorPage />,
   },
 ]);
