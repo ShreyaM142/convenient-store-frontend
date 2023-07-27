@@ -11,6 +11,7 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import SignInSide from "./routes/login";
 import Store from "./routes/store";
+import { AuthProvider } from "react-auth-kit";
 
 const router = createBrowserRouter([
   {
@@ -32,8 +33,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider authType="localstorage" authName={"_auth"}>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </AuthProvider>
   </React.StrictMode>
 );

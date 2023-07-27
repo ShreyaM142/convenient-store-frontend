@@ -15,6 +15,9 @@ import {
   TypographyProps,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useIsAuthenticated, useSignIn } from "react-auth-kit";
+import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -35,14 +38,38 @@ function Copyright(props: TypographyProps) {
 }
 
 export default function SignInSide() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const signIn = useSignIn();
+  const isAuthenticated = useIsAuthenticated();
+
+  const navigate = useNavigate();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
       password: data.get("password"),
     });
+    // const signInData = await axios
+    //   .post("https://fakestoreapi.com/auth/login", {
+    //     data: {
+    //       username: "mor_2314",
+    //       password: "83r5^_",
+    //     },
+    //   })
+    //   .catch();
+    // console.log({ signInData });
+    const isSignInSuccessful = signIn({
+      token: "my token",
+      expiresIn: 24 * 60 * 30,
+      tokenType: "Bearer",
+    });
+    if (!isSignInSuccessful) {
+      console.log("could not sign in");
+    }
+    navigate("/store");
   };
+
+  if (isAuthenticated()) return <Navigate to={"/store"} />;
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>

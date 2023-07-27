@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Store() {
   return (
-    <div>Store</div>
-  )
+    <div>
+      Store <Link to="/login">login</Link>
+    </div>
+  );
 }
 
-export default Store
+export default Store;
