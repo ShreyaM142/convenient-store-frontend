@@ -1,36 +1,54 @@
+import { Box, Button, Stack, Typography, Link as MuiLink } from "@mui/material";
+import bread from "../assets/breads1.jpg";
+import { Link } from "react-router-dom";
+import { Storefront } from "@mui/icons-material";
+import AccountMenu from "../components/AccountMenu";
+
 export default function Root() {
   return (
     <>
-      <div id="sidebar">
-        <h1>React Router Contacts</h1>
-        <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search contacts"
-              placeholder="Search"
-              type="search"
-              name="q"
-            />
-            <div id="search-spinner" aria-hidden hidden={true} />
-            <div className="sr-only" aria-live="polite"></div>
-          </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
-        </div>
-        <nav>
-          <ul>
-            <li>
-              <a href={`/contacts/1`}>Your Name</a>
-            </li>
-            <li>
-              <a href={`/contacts/2`}>Your Friend</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-      <div id="detail"></div>
+      <Box
+        height="100vh"
+        width="100%"
+        sx={{
+          backdropFilter: "brightness(40%)",
+          backgroundImage: `url(${bread})`,
+          backgroundSize: "cover",
+          display: "flex",
+          alignItems: "center",
+          p: 10,
+        }}
+      >
+        <Box position="absolute" top={10} right={10}>
+          <MuiLink
+            component={Link}
+            to="/about"
+            underline="hover"
+            fontSize="large"
+            sx={{
+              color: "white",
+            }}
+          >
+            About us
+          </MuiLink>
+          <AccountMenu />
+        </Box>
+        <Stack width="50%" alignItems="start" gap={5}>
+          <Typography variant="h1" color="white" fontWeight="bold">
+            Welcome to the Bakery
+          </Typography>
+          <Button
+            component={Link}
+            to="/store"
+            size="large"
+            variant="contained"
+            endIcon={<Storefront />}
+            disableElevation
+          >
+            Visit the store
+          </Button>
+        </Stack>
+      </Box>
     </>
   );
 }
