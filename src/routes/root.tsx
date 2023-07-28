@@ -19,7 +19,19 @@ export default function Root() {
           p: 10,
         }}
       >
-        <Box position="absolute" top={10} right={10}>
+        <Box
+          position="absolute"
+          top={10}
+          right={10}
+          sx={{
+            button: {
+              color: "white",
+            },
+          }}
+          display="flex"
+          gap={2}
+          alignItems="center"
+        >
           <MuiLink
             component={Link}
             to="/about"
