@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
-import axios from "axios";
+// import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 function Copyright(props: TypographyProps) {
@@ -59,9 +59,11 @@ export default function SignInSide() {
     //   .catch();
     // console.log({ signInData });
     const isSignInSuccessful = signIn({
-      token: "my token",
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
       expiresIn: 24 * 60 * 30,
       tokenType: "Bearer",
+      authState: {},
     });
     if (!isSignInSuccessful) {
       console.log("could not sign in");
