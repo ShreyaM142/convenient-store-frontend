@@ -7,6 +7,7 @@ import "@fontsource/roboto/700.css";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import SignInSide from "./routes/login";
@@ -41,13 +42,16 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <AuthProvider authType="localstorage" authName={"_auth"}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <RouterProvider router={router} />
-      </ThemeProvider>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider authType="localstorage" authName={"_auth"}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <RouterProvider router={router} />
+        </ThemeProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 );

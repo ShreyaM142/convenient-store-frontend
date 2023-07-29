@@ -34,7 +34,7 @@ export default function DrawerAppBar() {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component="nav" variant="outlined">
+      <AppBar component="nav" variant="outlined" elevation={0}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
