@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import { Outlet } from "react-router-dom";
 import AccountMenu from "../components/AccountMenu";
+import CartMenu from "../components/Cart";
 
 const pages = ["Categories", "About"];
 
@@ -120,6 +121,7 @@ export default function DrawerAppBar() {
             </Box>
 
             <Box sx={{ flexGrow: 0 }}>
+              <CartMenu />
               <AccountMenu />
             </Box>
           </Toolbar>

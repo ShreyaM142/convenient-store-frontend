@@ -15,6 +15,7 @@ import { AuthProvider } from "react-auth-kit";
 import Categories from "./routes/categories";
 import Products from "./routes/products";
 import Product from "./routes/product";
+import Checkout from "./routes/checkout";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
       { path: "/store", element: <Categories /> },
       { path: "/store/:category", element: <Products /> },
       { path: "/store/:category/:productId", element: <Product /> },
+      { path: "/store/checkout", element: <Checkout /> },
     ],
   },
 ]);
