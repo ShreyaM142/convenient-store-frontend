@@ -12,6 +12,9 @@ import ErrorPage from "./error-page";
 import SignInSide from "./routes/login";
 import Store from "./routes/store";
 import { AuthProvider } from "react-auth-kit";
+import Categories from "./routes/categories";
+import Products from "./routes/products";
+import Product from "./routes/product";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +31,11 @@ const router = createBrowserRouter([
     path: "/store",
     element: <Store />,
     errorElement: <ErrorPage />,
+    children: [
+      { path: "/store", element: <Categories /> },
+      { path: "/store/:category", element: <Products /> },
+      { path: "/store/:category/:productId", element: <Product /> },
+    ],
   },
 ]);
 
