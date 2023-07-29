@@ -17,7 +17,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
 // import axios from "axios";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -40,6 +40,7 @@ function Copyright(props: TypographyProps) {
 export default function SignInSide() {
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
+  const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -68,7 +69,8 @@ export default function SignInSide() {
     if (!isSignInSuccessful) {
       console.log("could not sign in");
     }
-    navigate("/store");
+    const redirectTo = searchParams.get("redirectTo");
+    redirectTo?.startsWith("/") ? navigate(redirectTo) : navigate("/store");
   };
 
   if (isAuthenticated()) return <Navigate to={"/store"} />;

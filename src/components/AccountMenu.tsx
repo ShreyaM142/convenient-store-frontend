@@ -8,17 +8,17 @@ import {
   IconButton,
   Tooltip,
   Button,
-  ButtonProps,
 } from "@mui/material";
 import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useIsAuthenticated, useSignOut } from "react-auth-kit";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export default function AccountMenu() {
   const isAuthenticated = useIsAuthenticated();
   const signOut = useSignOut();
+  const { pathname, search } = useLocation();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -30,7 +30,11 @@ export default function AccountMenu() {
 
   if (!isAuthenticated()) {
     return (
-      <Button component={Link} to="/login" sx={{ color: "white" }}>
+      <Button
+        component={Link}
+        to={"/login?redirectTo=" + pathname + search}
+        sx={{ color: "white" }}
+      >
         Login
       </Button>
     );
