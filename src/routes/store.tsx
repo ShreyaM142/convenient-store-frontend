@@ -33,7 +33,7 @@ export default function DrawerAppBar() {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", overflow: "auto" }}>
       <AppBar component="nav" variant="outlined" elevation={0}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>

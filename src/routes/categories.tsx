@@ -1,5 +1,3 @@
-import { useAuthApi } from "../lib/axios";
-import { useQuery } from "react-query";
 import {
   Card,
   CardActionArea,
@@ -8,14 +6,10 @@ import {
   Grid,
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import useCategories from "../hooks/useCategories";
 
 function Categories() {
-  const authApi = useAuthApi();
-  const { data } = useQuery("categories", () =>
-    authApi()
-      .get<string[]>("/products/categories")
-      .then((resp) => resp.data),
-  );
+  const { data } = useCategories();
 
   if (!data) return <div>Categories</div>;
 
