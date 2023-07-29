@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useAuthApi } from "../lib/axios";
 import { useQuery } from "react-query";
@@ -13,25 +12,11 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-// import { useIsAuthenticated } from "react-auth-kit";
 import useCategories from "../hooks/useCategories";
-
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-};
+import { Product } from "./product";
 
 function Products() {
   const { category } = useParams();
-  //   const isAuthenticated = useIsAuthenticated();
   const authApi = useAuthApi();
   const { data: categories } = useCategories();
   const { data } = useQuery(["products", category], () =>
@@ -46,13 +31,12 @@ function Products() {
       {categories && (
         <Box>
           {categories.map((category) => (
-            <Typography>{category}</Typography>
+            <Typography key={category}>{category}</Typography>
           ))}
         </Box>
       )}
       <Grid container spacing={2}>
         {data.map((product) => {
-          // const categorySlug = category.replace(" ", "-");
           return (
             <Grid item key={product.id} sm={6} xs={12} md={4}>
               <Card variant="outlined">
@@ -81,7 +65,12 @@ function Products() {
                     {product.title}
                   </CardContent>
                   <CardActions disableSpacing sx={{ justifyContent: "end" }}>
-                    <Button>Add to cart</Button>
+                    <Button
+                      onClick={(e) => e.preventDefault()}
+                      onMouseDown={(event) => event.stopPropagation()}
+                    >
+                      Add to cart
+                    </Button>
                   </CardActions>
                 </CardActionArea>
               </Card>

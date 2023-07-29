@@ -136,7 +136,7 @@ export default function DrawerAppBar() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Container maxWidth="xl" component="main" sx={{ p: 3 }}>
+      <Container maxWidth="lg" component="main" sx={{ p: 3 }}>
         <Toolbar />
         <Outlet />
       </Container>

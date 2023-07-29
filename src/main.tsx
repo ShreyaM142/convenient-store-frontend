@@ -15,7 +15,7 @@ import Store from "./routes/store";
 import { AuthProvider } from "react-auth-kit";
 import Categories from "./routes/categories";
 import Products from "./routes/products";
-import Product from "./routes/product";
+import Product, { loader as productLoader } from "./routes/product";
 import Checkout from "./routes/checkout";
 
 const router = createBrowserRouter([
@@ -36,7 +36,10 @@ const router = createBrowserRouter([
     children: [
       { path: "/store", element: <Categories /> },
       { path: "/store/:category", element: <Products /> },
-      { path: "/store/products/:productId", element: <Product /> },
+      {
+        path: "/store/products/:productId",
+        element: <Product />,
+      },
       { path: "/store/checkout", element: <Checkout /> },
     ],
   },
