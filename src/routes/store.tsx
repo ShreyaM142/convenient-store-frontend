@@ -6,15 +6,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import AccountMenu from "../components/AccountMenu";
 import CartMenu from "../components/Cart";
+import LinkButton from "../components/LinkButton";
 
-const pages = ["Categories", "About"];
+const pages = [
+  { label: "Categories", url: "/store" },
+  { label: "About", url: "/about" },
+];
 
 export default function DrawerAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -38,8 +41,8 @@ export default function DrawerAppBar() {
             <Typography
               variant="h6"
               noWrap
-              component="a"
-              href="/"
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "none", md: "flex" },
@@ -83,8 +86,13 @@ export default function DrawerAppBar() {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem
+                    component={Link}
+                    to={page.url}
+                    key={page.label}
+                    onClick={handleCloseNavMenu}
+                  >
+                    <Typography textAlign="center">{page.label}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -93,8 +101,8 @@ export default function DrawerAppBar() {
             <Typography
               variant="h5"
               noWrap
-              component="a"
-              href=""
+              component={Link}
+              to="/"
               sx={{
                 mr: 2,
                 display: { xs: "flex", md: "none" },
@@ -110,13 +118,14 @@ export default function DrawerAppBar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
-                <Button
-                  key={page}
+                <LinkButton
+                  to={page.url}
+                  key={page.label}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
-                </Button>
+                  {page.label}
+                </LinkButton>
               ))}
             </Box>
 

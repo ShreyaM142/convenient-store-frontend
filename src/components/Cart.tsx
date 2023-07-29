@@ -14,7 +14,7 @@ export default function CartMenu() {
           sx={{ ml: 2, color: "white" }}
           aria-controls={"cart-menu"}
         >
-          <Badge badgeContent={4}>
+          <Badge badgeContent={4} color="secondary">
             <ShoppingCart />
           </Badge>
         </IconButton>
