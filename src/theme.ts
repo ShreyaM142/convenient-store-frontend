@@ -1,3 +1,4 @@
+import { darkScrollbar } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
@@ -7,6 +8,17 @@ const theme = createTheme({
     },
     secondary: {
       main: "#ECDACF",
+    },
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: (theme) => ({
+        body: darkScrollbar({
+          active: theme.palette.primary.dark,
+          thumb: theme.palette.secondary.dark,
+          track: theme.palette.secondary.main,
+        }),
+      }),
     },
   },
 });
