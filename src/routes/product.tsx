@@ -32,7 +32,7 @@ function ProductPage() {
   if (!product && !isLoading) return null;
   return (
     <>
-      <Grid container spacing={6}>
+      <Grid container spacing={6} mt={3}>
         <Grid item xs={12} md={6}>
           <Box display="flex" justifyContent="center">
             {product ? (
@@ -42,7 +42,7 @@ function ProductPage() {
                 width={300}
                 height={300}
                 style={{
-                  width: "100%",
+                  // width: "100%",
                   height: "auto",
                   objectFit: "contain",
                   aspectRatio: 1 / 1,
@@ -53,7 +53,7 @@ function ProductPage() {
             )}
           </Box>
         </Grid>
-        <Grid item xs={12} md={6} mt={6}>
+        <Grid item xs={12} md={6}>
           <Box display="flex" flexDirection="column" gap={3} alignItems="start">
             <Typography
               component={"h1"}
@@ -68,16 +68,25 @@ function ProductPage() {
               <Rating name="read-only" value={product?.rating.rate} readOnly />(
               {product?.rating.count})
             </Box>
-            <Typography
-              color="primary"
-              fontWeight={700}
-              fontSize={25}
-              variant="h2"
-            >
-              {product?.price ? `$${product.price}` : <Skeleton />}
+            <Typography color="primary" fontWeight={700} fontSize={25}>
+              {product?.price ? `$${product.price}` : <Skeleton width={50} />}
             </Typography>
-            {product && <Button variant="contained">Add to cart</Button>}
-            <Typography>{product?.description ?? <Skeleton />}</Typography>
+            {product ? (
+              <Button variant="contained">Add to cart</Button>
+            ) : (
+              <Skeleton>
+                <Button variant="contained" />
+              </Skeleton>
+            )}
+            <Typography width="100%">
+              {product?.description ?? (
+                <>
+                  <Skeleton width="100%" />
+                  <Skeleton width="100%" />
+                  <Skeleton width="100%" />
+                </>
+              )}
+            </Typography>
           </Box>
         </Grid>
       </Grid>

@@ -44,7 +44,9 @@ function Products() {
         aria-labelledby="nested-list-subheader"
         subheader={
           <ListSubheader id="nested-list-subheader">
-            <Typography fontWeight={600}>Categories</Typography>
+            <Typography fontWeight={600} gutterBottom>
+              Categories
+            </Typography>
           </ListSubheader>
         }
       >
@@ -59,7 +61,11 @@ function Products() {
             </ListItemButton>
           ))
         ) : (
-          <Skeleton />
+          <>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </>
         )}
       </List>
       <Divider orientation="vertical" flexItem />
@@ -97,20 +103,31 @@ function Products() {
                     "&:last-child": {
                       paddingBottom: 2,
                     },
+
+                    textOverflow: "ellipsis",
+
+                    /* Needed to make it work */
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   <Typography
                     fontWeight={600}
                     fontSize={14}
                     variant="h3"
+                    color="text.primary"
                     sx={{
                       textOverflow: "ellipsis",
 
                       /* Needed to make it work */
                       overflow: "hidden",
                       whiteSpace: "nowrap",
+                      textDecoration: "none",
+                      boxShadow: "none",
                     }}
                     gutterBottom
+                    component={Link}
+                    to={`/store/products/${product?.id}`}
                   >
                     {product?.title ?? <Skeleton />}
                   </Typography>
