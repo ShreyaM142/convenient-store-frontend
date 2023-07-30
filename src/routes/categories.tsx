@@ -12,8 +12,6 @@ import useCategories, { makeCategorySlug } from "../hooks/useCategories";
 function Categories() {
   const { data = [undefined, undefined, undefined] } = useCategories();
 
-  if (!data) return <div>Categories</div>;
-
   return (
     <Grid container spacing={2}>
       {data.map((category) => {
