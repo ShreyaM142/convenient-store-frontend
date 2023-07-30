@@ -15,13 +15,19 @@ import Store from "./routes/store";
 import { AuthProvider } from "react-auth-kit";
 import Categories from "./routes/categories";
 import Products from "./routes/products";
-import Product, { loader as productLoader } from "./routes/product";
+import Product from "./routes/product";
 import Checkout from "./routes/checkout";
+import About from "./routes/about";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/about",
+    element: <About />,
     errorElement: <ErrorPage />,
   },
   {
