@@ -5,7 +5,6 @@ import { useAuthHeader } from "react-auth-kit";
 
 const authApi = axios.create({
   baseURL: `${import.meta.env.VITE_APIURL}`,
-  timeout: 1000,
 });
 export const useAuthApi = () => {
   const authHeader = useAuthHeader();
@@ -16,5 +15,4 @@ export const useAuthApi = () => {
 };
 export const api = axios.create({
   baseURL: `${import.meta.env.VITE_APIURL}`,
-  timeout: 1000,
 });
