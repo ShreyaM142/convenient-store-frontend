@@ -45,9 +45,18 @@ export default function Root() {
           </MuiLink>
           <AccountMenu />
         </Box>
-        <Stack width="50%" alignItems="start" gap={5}>
-          <Typography variant="h1" color="white" fontWeight="bold">
-            Welcome to the Bakery
+        <Stack width={{ xs: "100%", md: "50%" }} alignItems="start" gap={5}>
+          <Typography
+            sx={{
+              fontSize: {
+                xs: "40px",
+                md: "80px",
+              },
+            }}
+            color="white"
+            fontWeight="bold"
+          >
+            Welcome to the bakery
           </Typography>
           <Button
             component={Link}

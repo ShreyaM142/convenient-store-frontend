@@ -46,7 +46,7 @@ export default function About() {
           <AccountMenu />
         </Box>
         <Box height={"100%"} width="100%" overflow="auto" p={10}>
-          <Stack width="50%" alignItems="start" gap={5}>
+          <Stack width={{ xs: "100%", md: "50%" }} alignItems="start" gap={5}>
             <Typography variant="h3" color="white" fontWeight="bold">
               About us
             </Typography>
