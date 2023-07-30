@@ -8,8 +8,8 @@ import {
   IconButton,
 } from "@mui/material";
 import { useQueries } from "react-query";
-import { makeProductQuery } from "../routes/product";
 import { Remove } from "@mui/icons-material";
+import { makeProductQuery } from "../lib/product";
 
 export type Cart = {
   id: number;
