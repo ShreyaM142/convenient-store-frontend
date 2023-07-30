@@ -35,7 +35,7 @@ function Products() {
   if (!data && !isLoading) return <div>Products</div>;
 
   return (
-    <Stack display={"flex"} gap={3}>
+    <Stack gap={3}>
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
@@ -43,6 +43,9 @@ function Products() {
         value={categories?.findIndex(
           (categoryLabel) => makeCategorySlug(categoryLabel) === category,
         )}
+        sx={{
+          alignSelf: "center",
+        }}
       >
         {categories?.map((category) => (
           <Tab
