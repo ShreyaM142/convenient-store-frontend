@@ -1,29 +1,7 @@
 import { useParams } from "react-router-dom";
-import { api } from "../lib/axios";
-import { UseQueryOptions, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { Box, Button, Grid, Rating, Skeleton, Typography } from "@mui/material";
-
-export type Product = {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-};
-
-export const makeProductQuery = (
-  productId?: string,
-): UseQueryOptions<Product> => ({
-  queryKey: ["product", productId],
-  queryFn: () =>
-    api.get<Product>(`/products/${productId}`).then((resp) => resp.data),
-  enabled: Boolean(productId),
-});
+import { makeProductQuery } from "../lib/product";
 
 function ProductPage() {
   const { productId } = useParams();

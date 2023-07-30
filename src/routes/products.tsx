@@ -17,8 +17,8 @@ import {
   Typography,
 } from "@mui/material";
 import useCategories, { makeCategorySlug } from "../hooks/useCategories";
-import { Product } from "./product";
 import { Add } from "@mui/icons-material";
+import { Product } from "../lib/product";
 
 function Products() {
   const { category = "" } = useParams();
