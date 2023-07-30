@@ -30,7 +30,7 @@ export default function CheckoutCart(cart: Cart) {
   return (
     <>
       <Typography variant="h6" gutterBottom>
-        Shipping address
+        Items in your cart
       </Typography>
       {/* <Skeleton width="100%" height={150} /> */}
 
