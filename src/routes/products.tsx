@@ -43,9 +43,6 @@ function Products() {
         value={categories?.findIndex(
           (categoryLabel) => makeCategorySlug(categoryLabel) === category,
         )}
-        sx={{
-          alignSelf: "center",
-        }}
       >
         {categories?.map((category) => (
           <Tab
