@@ -31,7 +31,6 @@ function Products() {
         .get<Product[]>(`/products/category/${category}`)
         .then((resp) => resp.data),
   );
-  console.log({ category });
 
   if (!data && !isLoading) return <div>Products</div>;
 
