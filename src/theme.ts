@@ -12,6 +12,9 @@ const theme = createTheme({
     secondary: {
       main: "#ECDACF",
     },
+    text: {
+      primary: "#373F50",
+    },
   },
   components: {
     MuiCssBaseline: {

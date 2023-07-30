@@ -3,57 +3,106 @@ import { useAuthApi } from "../lib/axios";
 import { useQuery } from "react-query";
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
-  CardActions,
   CardContent,
   CardMedia,
+  Divider,
   Grid,
+  IconButton,
+  List,
+  ListItemButton,
+  ListItemText,
+  ListSubheader,
+  Rating,
+  Skeleton,
   Typography,
 } from "@mui/material";
-import useCategories from "../hooks/useCategories";
+import useCategories, { makeCategorySlug } from "../hooks/useCategories";
 import { Product } from "./product";
+import { Add } from "@mui/icons-material";
 
 function Products() {
   const { category } = useParams();
   const authApi = useAuthApi();
   const { data: categories } = useCategories();
-  const { data } = useQuery(["products", category], () =>
-    authApi()
-      .get<Product[]>(`/products/category/${category}`)
-      .then((resp) => resp.data),
+  const { data = [undefined, undefined, undefined], isLoading } = useQuery(
+    ["products", category],
+    () =>
+      authApi()
+        .get<Product[]>(`/products/category/${category}`)
+        .then((resp) => resp.data),
   );
-  if (!data) return <div>Products</div>;
+
+  if (!data && !isLoading) return <div>Products</div>;
 
   return (
-    <Box display={"flex"}>
-      {categories && (
-        <Box>
-          {categories.map((category) => (
-            <Typography key={category}>{category}</Typography>
-          ))}
-        </Box>
-      )}
+    <Box display={"flex"} gap={3}>
+      <List
+        // sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader id="nested-list-subheader">
+            <Typography fontWeight={600}>Categories</Typography>
+          </ListSubheader>
+        }
+      >
+        {categories ? (
+          categories.map((category) => (
+            <ListItemButton
+              component={Link}
+              to={`/store/${makeCategorySlug(category)}`}
+              key={category}
+            >
+              <ListItemText primary={category} />
+            </ListItemButton>
+          ))
+        ) : (
+          <Skeleton />
+        )}
+      </List>
+      <Divider orientation="vertical" flexItem />
+
       <Grid container spacing={2}>
-        {data.map((product) => {
+        {data?.map((product) => {
           return (
-            <Grid item key={product.id} sm={6} xs={12} md={4}>
+            <Grid item key={product?.id} sm={6} xs={12} md={4}>
               <Card variant="outlined">
                 <CardActionArea
                   component={Link}
-                  to={`/store/products/${product.id}`}
+                  to={`/store/products/${product?.id}`}
                 >
-                  <CardMedia
-                    image={product.image}
-                    sx={{
-                      height: 400,
-                      backgroundSize: "contain",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                  />
-                  <CardContent
-                    color="primary"
+                  {product ? (
+                    <CardMedia
+                      image={product?.image}
+                      sx={{
+                        backgroundSize: "contain",
+                        aspectRatio: 1,
+                      }}
+                    />
+                  ) : (
+                    <Skeleton
+                      width="100%"
+                      sx={{
+                        aspectRatio: 1,
+                      }}
+                    />
+                  )}
+                </CardActionArea>
+
+                <CardContent
+                  color="primary"
+                  sx={{
+                    "&:last-child": {
+                      paddingBottom: 2,
+                    },
+                  }}
+                >
+                  <Typography
+                    fontWeight={600}
+                    fontSize={14}
+                    variant="h3"
                     sx={{
                       textOverflow: "ellipsis",
 
@@ -61,18 +110,38 @@ function Products() {
                       overflow: "hidden",
                       whiteSpace: "nowrap",
                     }}
+                    gutterBottom
                   >
-                    {product.title}
-                  </CardContent>
-                  <CardActions disableSpacing sx={{ justifyContent: "end" }}>
-                    <Button
-                      onClick={(e) => e.preventDefault()}
-                      onMouseDown={(event) => event.stopPropagation()}
+                    {product?.title ?? <Skeleton />}
+                  </Typography>
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    alignItems="flex-end"
+                  >
+                    <Box>
+                      <Rating
+                        name="read-only"
+                        value={product?.rating.rate}
+                        readOnly
+                      />
+                      <Typography color="primary" fontWeight={600}>
+                        {product?.price ? `$${product.price}` : <Skeleton />}
+                      </Typography>
+                    </Box>
+
+                    <IconButton
+                      sx={{
+                        border: "2px solid",
+                        borderColor: "primary.main",
+                        borderRadius: 2,
+                      }}
+                      size="small"
                     >
-                      Add to cart
-                    </Button>
-                  </CardActions>
-                </CardActionArea>
+                      <Add color="primary" />
+                    </IconButton>
+                  </Box>
+                </CardContent>
               </Card>
             </Grid>
           );

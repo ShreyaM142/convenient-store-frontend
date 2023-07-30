@@ -9,5 +9,8 @@ function useCategories() {
       .then((resp) => resp.data),
   );
 }
+export function makeCategorySlug(category: string) {
+  return category.replace(" ", "-");
+}
 
 export default useCategories;
