@@ -7,15 +7,13 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
-  Divider,
   Grid,
   IconButton,
-  List,
-  ListItemButton,
-  ListItemText,
-  ListSubheader,
   Rating,
   Skeleton,
+  Stack,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 import useCategories, { makeCategorySlug } from "../hooks/useCategories";
@@ -23,7 +21,7 @@ import { Product } from "./product";
 import { Add } from "@mui/icons-material";
 
 function Products() {
-  const { category } = useParams();
+  const { category = "" } = useParams();
   const authApi = useAuthApi();
   const { data: categories } = useCategories();
   const { data = [undefined, undefined, undefined], isLoading } = useQuery(
@@ -33,42 +31,34 @@ function Products() {
         .get<Product[]>(`/products/category/${category}`)
         .then((resp) => resp.data),
   );
+  console.log({ category });
 
   if (!data && !isLoading) return <div>Products</div>;
 
   return (
-    <Box display={"flex"} gap={3}>
-      <List
-        // sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-        component="nav"
-        aria-labelledby="nested-list-subheader"
-        subheader={
-          <ListSubheader id="nested-list-subheader">
-            <Typography fontWeight={600} gutterBottom>
-              Categories
-            </Typography>
-          </ListSubheader>
-        }
-      >
-        {categories ? (
-          categories.map((category) => (
-            <ListItemButton
-              component={Link}
-              to={`/store/${makeCategorySlug(category)}`}
-              key={category}
-            >
-              <ListItemText primary={category} />
-            </ListItemButton>
-          ))
-        ) : (
-          <>
-            <Skeleton />
-            <Skeleton />
-            <Skeleton />
-          </>
+    <Stack display={"flex"} gap={3}>
+      <Tabs
+        variant="scrollable"
+        scrollButtons="auto"
+        centered
+        value={categories?.findIndex(
+          (categoryLabel) => makeCategorySlug(categoryLabel) === category,
         )}
-      </List>
-      <Divider orientation="vertical" flexItem />
+      >
+        {categories?.map((category) => (
+          <Tab
+            label={category}
+            component={Link}
+            to={`/store/${makeCategorySlug(category)}`}
+            key={category}
+          />
+        )) ?? (
+          <Box display="flex" gap={3}>
+            <Skeleton height={40} width={100} />
+            <Skeleton height={40} width={100} />
+          </Box>
+        )}
+      </Tabs>
 
       <Grid container spacing={2}>
         {data?.map((product) => {
@@ -164,7 +154,7 @@ function Products() {
           );
         })}
       </Grid>
-    </Box>
+    </Stack>
   );
 }
 
