@@ -7,7 +7,7 @@ export default defineConfig({
     proxy: {
       // Using the proxy instance
       "/api": {
-        target: "https://fakestoreapi.com",
+        target: "https://limitless-lake-55070.herokuapp.com",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

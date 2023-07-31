@@ -7,7 +7,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import useCategories, { makeCategorySlug } from "../hooks/useCategories";
+import useCategories from "../hooks/useCategories";
 
 function Categories() {
   const { data = [undefined, undefined, undefined] } = useCategories();
@@ -15,21 +15,26 @@ function Categories() {
   return (
     <Grid container spacing={2}>
       {data.map((category) => {
-        const categorySlug = makeCategorySlug(category ?? "");
         return (
-          <Grid item key={category} sm={6} xs={12} md={4}>
+          <Grid item key={category?.id} sm={6} xs={12} md={4}>
             <Card variant="outlined">
-              <CardActionArea component={Link} to={`/store/${categorySlug}`}>
+              <CardActionArea
+                component={Link}
+                to={`/store/${category?.id}`}
+                disabled={!category}
+              >
                 {category ? (
                   <CardMedia
-                    image={`https://loremflickr.com/600/240/${categorySlug}`}
+                    image={category?.imageUrl}
                     sx={{ height: 200 }}
+                    component="img"
+                    loading="lazy"
                   />
                 ) : (
                   <Skeleton sx={{ height: 200 }} />
                 )}
                 <CardContent color="primary">
-                  {category ?? <Skeleton />}
+                  {category?.categoryName ?? <Skeleton />}
                 </CardContent>
               </CardActionArea>
             </Card>
