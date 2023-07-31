@@ -18,6 +18,7 @@ import Products from "./routes/products";
 import Product from "./routes/product";
 import Checkout from "./routes/checkout";
 import About from "./routes/about";
+import SignUpSide from "./routes/signup";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <SignInSide />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignUpSide />,
     errorElement: <ErrorPage />,
   },
   {

@@ -36,7 +36,7 @@ function Copyright(props: TypographyProps) {
   );
 }
 
-export default function SignInSide() {
+export default function SignUpSide() {
   const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
   const [searchParams] = useSearchParams();
@@ -47,10 +47,10 @@ export default function SignInSide() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // const data = new FormData(event.currentTarget);
-    // const loginData = {
+    // console.log({
     //   email: data.get("email"),
     //   password: data.get("password"),
-    // };
+    // });
     // const signInData = await axios
     //   .post("https://fakestoreapi.com/auth/login", {
     //     data: {
@@ -149,10 +149,10 @@ export default function SignInSide() {
             </Button>
             <MuiLink
               component={Link}
-              to={`/signup?redirectTo=${redirectTo ?? "/"}`}
+              to={`/login?redirectTo=${redirectTo ?? "/"}`}
               variant="body2"
             >
-              {"Don't have an account? Sign Up"}
+              {"Already have an account? Sign In"}
             </MuiLink>
             <Copyright sx={{ mt: 5 }} />
           </Box>
