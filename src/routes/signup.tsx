@@ -2,7 +2,6 @@ import * as React from "react";
 
 import {
   Avatar,
-  Button,
   TextField,
   FormControlLabel,
   Checkbox,
@@ -14,9 +13,11 @@ import {
   TypographyProps,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import { useIsAuthenticated, useSignIn } from "react-auth-kit";
-// import axios from "axios";
+import { useIsAuthenticated } from "react-auth-kit";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { api } from "../lib/axios";
+import { useMutation } from "react-query";
+import { LoadingButton } from "@mui/lab";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -36,41 +37,44 @@ function Copyright(props: TypographyProps) {
   );
 }
 
+export type SignupInputs = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+};
+
 export default function SignUpSide() {
-  const signIn = useSignIn();
   const isAuthenticated = useIsAuthenticated();
   const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
   const redirectTo = searchParams.get("redirectTo");
+  const { mutate, isLoading } = useMutation(
+    (formData: FormData) => {
+      const signupData = {
+        firstName: formData.get("firstName"),
+        lastName: formData.get("lastName"),
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
+      return api.post("/user/signup", signupData);
+    },
+    {
+      onSuccess(data) {
+        if (data.data.status === "success")
+          navigate(
+            `/login?redirectTo=${
+              redirectTo?.startsWith("/") ? redirectTo : "/"
+            }`,
+          );
+      },
+    },
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // console.log({
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // });
-    // const signInData = await axios
-    //   .post("https://fakestoreapi.com/auth/login", {
-    //     data: {
-    //       username: "mor_2314",
-    //       password: "83r5^_",
-    //     },
-    //   })
-    //   .catch();
-    // console.log({ signInData });
-    const isSignInSuccessful = signIn({
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-      expiresIn: 24 * 60 * 30,
-      tokenType: "Bearer",
-      authState: {},
-    });
-    if (!isSignInSuccessful) {
-      console.log("could not sign in");
-    }
-    redirectTo?.startsWith("/") ? navigate(redirectTo) : navigate("/store");
+    mutate(new FormData(event.currentTarget));
   };
 
   if (isAuthenticated()) return <Navigate to={"/store"} />;
@@ -119,11 +123,29 @@ export default function SignUpSide() {
               margin="normal"
               required
               fullWidth
+              id="firstName"
+              label="First name"
+              name="firstName"
+              autoComplete="given-name"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              autoComplete="family-name"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="email"
               label="Email Address"
               name="email"
               autoComplete="email"
-              autoFocus
             />
             <TextField
               margin="normal"
@@ -139,14 +161,15 @@ export default function SignUpSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={isLoading}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <MuiLink
               component={Link}
               to={`/login?redirectTo=${redirectTo ?? "/"}`}
