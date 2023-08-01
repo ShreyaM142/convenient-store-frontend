@@ -46,6 +46,7 @@ export default function CheckoutCart(cart: Cart) {
           if (product.data) {
             return (
               <Card
+                key={product.data.id}
                 sx={{
                   height: 150,
                   p: 2,
@@ -59,7 +60,7 @@ export default function CheckoutCart(cart: Cart) {
                 <CardMedia
                   image={product.data.imageURL}
                   sx={{
-                    aspectRatio: 1 / 1,
+                    aspectRatio: 1,
                     height: "100%",
                     objectFit: "contain",
                   }}

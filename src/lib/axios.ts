@@ -1,8 +1,6 @@
 import axios from "axios";
 import { useAuthHeader } from "react-auth-kit";
 
-// axios.defaults.baseURL = import.meta.env.VITE_APIURL;
-
 const authApi = axios.create({
   baseURL: `${import.meta.env.VITE_APIURL}`,
 });
