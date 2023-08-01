@@ -3,15 +3,15 @@ import { UseQueryOptions } from "react-query";
 
 export type Product = {
   id: number;
-  title: string;
+  name: string;
   price: number;
   description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  // category: string;
+  imageURL: string;
+  // rating: {
+  //   rate: number;
+  //   count: number;
+  // };
 };
 
 export const makeProductQuery = (

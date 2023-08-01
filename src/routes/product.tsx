@@ -15,8 +15,8 @@ function ProductPage() {
           <Box display="flex" justifyContent="center">
             {product ? (
               <img
-                src={product?.image}
-                alt={product?.title}
+                src={product?.imageURL}
+                alt={product?.name}
                 width={300}
                 height={300}
                 style={{
@@ -40,7 +40,7 @@ function ProductPage() {
               fontSize="30px"
               width="100%"
             >
-              {product?.title ?? <Skeleton />}
+              {product?.name ?? <Skeleton />}
             </Typography>
             <Box display="flex" alignItems="center">
               <Rating name="read-only" value={product?.rating.rate} readOnly />(

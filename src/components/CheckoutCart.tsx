@@ -57,7 +57,7 @@ export default function CheckoutCart(cart: Cart) {
                 variant="outlined"
               >
                 <CardMedia
-                  image={product.data.image}
+                  image={product.data.imageURL}
                   sx={{
                     aspectRatio: 1 / 1,
                     height: "100%",
@@ -65,7 +65,7 @@ export default function CheckoutCart(cart: Cart) {
                   }}
                 />
                 <Box flexGrow={1}>
-                  <Typography fontWeight={700}>{product.data.title}</Typography>
+                  <Typography fontWeight={700}>{product.data.name}</Typography>
                   <Typography>{product.data.price}</Typography>
                 </Box>
                 <IconButton>

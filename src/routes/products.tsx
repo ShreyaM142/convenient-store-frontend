@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import { useAuthApi } from "../lib/axios";
+// import { useAuthApi } from "../lib/axios";
 import { useQuery } from "react-query";
 import {
   Box,
@@ -9,27 +9,27 @@ import {
   CardMedia,
   Grid,
   IconButton,
-  Rating,
+  // Rating,
   Skeleton,
   Stack,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
-import useCategories, { makeCategorySlug } from "../hooks/useCategories";
+import useCategories from "../hooks/useCategories";
 import { Add } from "@mui/icons-material";
-import { Product } from "../lib/product";
+// import { Product } from "../lib/product";
 
 function Products() {
   const { category = "" } = useParams();
-  const authApi = useAuthApi();
+  // const authApi = useAuthApi();
   const { data: categories } = useCategories();
   const { data = [undefined, undefined, undefined], isLoading } = useQuery(
     ["products", category],
-    () =>
-      authApi()
-        .get<Product[]>(`/products/category/${category}`)
-        .then((resp) => resp.data),
+    () => categories?.find((c) => c.id.toString() === category)?.products,
+    // authApi()
+    //   .get<Product[]>(`/products/category/${category}`)
+    //   .then((resp) => resp.data),
   );
 
   if (!data && !isLoading) return <div>Products</div>;
@@ -39,17 +39,15 @@ function Products() {
       <Tabs
         variant="scrollable"
         scrollButtons="auto"
-        centered
-        value={categories?.findIndex(
-          (categoryLabel) => makeCategorySlug(categoryLabel) === category,
-        )}
+        // centered
+        value={categories?.findIndex(({ id }) => id.toString() === category)}
       >
         {categories?.map((category) => (
           <Tab
-            label={category}
+            label={category.categoryName}
             component={Link}
-            to={`/store/${makeCategorySlug(category)}`}
-            key={category}
+            to={`/store/${category.id}`}
+            key={category.id}
           />
         )) ?? (
           <Box display="flex" gap={3}>
@@ -70,7 +68,7 @@ function Products() {
                 >
                   {product ? (
                     <CardMedia
-                      image={product?.image}
+                      image={product?.imageURL}
                       sx={{
                         backgroundSize: "contain",
                         aspectRatio: 1,
@@ -118,7 +116,7 @@ function Products() {
                     component={Link}
                     to={`/store/products/${product?.id}`}
                   >
-                    {product?.title ?? <Skeleton />}
+                    {product?.name ?? <Skeleton />}
                   </Typography>
                   <Box
                     display="flex"
@@ -126,11 +124,11 @@ function Products() {
                     alignItems="flex-end"
                   >
                     <Box>
-                      <Rating
+                      {/* <Rating
                         name="read-only"
                         value={product?.rating.rate}
                         readOnly
-                      />
+                      /> */}
                       <Typography color="primary" fontWeight={600}>
                         {product?.price ? `$${product.price}` : <Skeleton />}
                       </Typography>
