@@ -1,8 +1,10 @@
-import { IconButton, Tooltip, Badge } from "@mui/material";
+import { IconButton, Tooltip, Badge, CircularProgress } from "@mui/material";
 import { ShoppingCart } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import useCart from "../hooks/useCart";
 
 export default function CartMenu() {
+  const { data, isLoading } = useCart();
   return (
     <>
       <Tooltip title="Go to your cart">
@@ -13,7 +15,16 @@ export default function CartMenu() {
           sx={{ ml: 2, color: "white" }}
           aria-controls={"cart-menu"}
         >
-          <Badge badgeContent={4} color="secondary">
+          <Badge
+            badgeContent={
+              isLoading ? (
+                <CircularProgress size="1em" />
+              ) : (
+                data?.cartItems.length
+              )
+            }
+            color="secondary"
+          >
             <ShoppingCart />
           </Badge>
         </IconButton>

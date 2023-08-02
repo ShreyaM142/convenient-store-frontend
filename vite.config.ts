@@ -8,7 +8,8 @@ export default defineConfig({
       // Using the proxy instance
       "/api": {
         target:
-          "http://convinent-app-backend-env-1.eba-tnyis4hv.eu-west-1.elasticbeanstalk.com/",
+          // "http://convinent-app-backend-env-1.eba-tnyis4hv.eu-west-1.elasticbeanstalk.com/",
+          "https://limitless-lake-55070.herokuapp.com/",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },

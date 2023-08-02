@@ -8,12 +8,11 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
-import AddressForm from "../components/AddressForm";
-import PaymentForm from "../components/PaymentForm";
 import Review from "../components/Review";
-import CheckoutCart, { Cart } from "../components/CheckoutCart";
-import { useAuthApi } from "../lib/axios";
-import { useQuery } from "react-query";
+import CheckoutCart from "../components/CheckoutCart";
+import useCart, { Cart } from "../hooks/useCart";
+import { VisitStoreButton } from "../components/VisitStoreButton";
+import { Stack } from "@mui/material";
 
 function Copyright() {
   return (
@@ -30,8 +29,8 @@ function Copyright() {
 
 const steps = [
   { component: CheckoutCart, label: "Your cart" },
-  { component: AddressForm, label: "Shipping address" },
-  { component: PaymentForm, label: "Payment details" },
+  // { component: AddressForm, label: "Shipping address" },
+  // { component: PaymentForm, label: "Payment details" },
   { component: Review, label: "Review your order" },
 ];
 
@@ -41,12 +40,7 @@ function GetStepContent({ cart, step }: { step: number; cart: Cart }) {
 }
 
 export default function Checkout() {
-  const authApi = useAuthApi();
-  const { data, isLoading } = useQuery("cart", () =>
-    authApi()
-      .get<Cart>("/carts/5")
-      .then((resp) => resp.data),
-  );
+  const { data, isLoading } = useCart();
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -69,41 +63,55 @@ export default function Checkout() {
           <Typography component="h1" variant="h4" align="center">
             Checkout
           </Typography>
-          <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
-            {steps.map(({ label }) => (
-              <Step key={label}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
+          {data.cartItems.length ? (
+            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+              {steps.map(({ label }) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
+          ) : (
+            <React.Fragment>
+              <Stack my={10} alignItems="center">
+                <Typography variant="h5" gutterBottom mb={2}>
+                  Your cart is empty
+                </Typography>
+                <VisitStoreButton />
+              </Stack>
+            </React.Fragment>
+          )}
           {activeStep === steps.length ? (
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
                 Thank you for your order.
               </Typography>
               <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
+                Your order is confirmed, we have emailed your order
+                confirmation, order will be ready to pick up in 30 mins.
               </Typography>
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <GetStepContent step={activeStep} cart={data} />
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                {activeStep !== 0 && (
-                  <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                    Back
-                  </Button>
-                )}
-                <Button
-                  variant="contained"
-                  onClick={handleNext}
-                  sx={{ mt: 3, ml: 1 }}
-                >
-                  {activeStep === steps.length - 1 ? "Place order" : "Next"}
-                </Button>
-              </Box>
+              {data.cartItems.length > 0 && (
+                <>
+                  <GetStepContent step={activeStep} cart={data} />
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    {activeStep !== 0 && (
+                      <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
+                        Back
+                      </Button>
+                    )}
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      sx={{ mt: 3, ml: 1 }}
+                    >
+                      {activeStep === steps.length - 1 ? "Place order" : "Next"}
+                    </Button>
+                  </Box>
+                </>
+              )}
             </React.Fragment>
           )}
         </Paper>

@@ -1,8 +1,8 @@
-import { Box, Button, Stack, Typography, Link as MuiLink } from "@mui/material";
+import { Box, Stack, Typography, Link as MuiLink } from "@mui/material";
 import bread from "../assets/breads1.jpg";
 import { Link } from "react-router-dom";
-import { Storefront } from "@mui/icons-material";
 import AccountMenu from "../components/AccountMenu";
+import { VisitStoreButton } from "../components/VisitStoreButton";
 
 export default function About() {
   return (
@@ -50,16 +50,7 @@ export default function About() {
             <Typography variant="h3" color="white" fontWeight="bold">
               About us
             </Typography>
-            <Button
-              component={Link}
-              to="/store"
-              size="large"
-              variant="contained"
-              endIcon={<Storefront />}
-              disableElevation
-            >
-              Visit the store
-            </Button>
+            <VisitStoreButton />
 
             <Typography variant="body1" color="white">
               At [Bakery Name], we believe that every day should be filled with

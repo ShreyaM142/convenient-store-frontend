@@ -2,7 +2,6 @@ import * as React from "react";
 
 import {
   Avatar,
-  Button,
   TextField,
   FormControlLabel,
   Checkbox,
@@ -15,8 +14,10 @@ import {
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useIsAuthenticated, useSignIn } from "react-auth-kit";
-// import axios from "axios";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useMutation } from "react-query";
+import { api } from "../lib/axios";
+import { LoadingButton } from "@mui/lab";
 
 function Copyright(props: TypographyProps) {
   return (
@@ -43,34 +44,49 @@ export default function SignInSide() {
 
   const navigate = useNavigate();
   const redirectTo = searchParams.get("redirectTo");
+  const { mutate, isLoading } = useMutation(
+    (formData: FormData) => {
+      const signupData = {
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
+      return api.post("/user/signIn", signupData);
+    },
+    {
+      onSuccess(data) {
+        if (data.data.status !== "success") return;
+        // if (data.data.status !== "Signin Success") return;
+
+        const isSignInSuccessful = signIn({
+          token: data.data.token,
+          expiresIn: 24 * 60 * 30,
+          tokenType: "Bearer",
+          authState: { token: data.data.token },
+        });
+        if (!isSignInSuccessful) {
+          return;
+        }
+        redirectTo?.startsWith("/") ? navigate(redirectTo) : navigate("/store");
+      },
+    },
+  );
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // const data = new FormData(event.currentTarget);
-    // const loginData = {
-    //   email: data.get("email"),
-    //   password: data.get("password"),
-    // };
-    // const signInData = await axios
-    //   .post("https://fakestoreapi.com/auth/login", {
-    //     data: {
-    //       username: "mor_2314",
-    //       password: "83r5^_",
-    //     },
-    //   })
-    //   .catch();
-    // console.log({ signInData });
-    const isSignInSuccessful = signIn({
-      token:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-      expiresIn: 24 * 60 * 30,
-      tokenType: "Bearer",
-      authState: {},
-    });
-    if (!isSignInSuccessful) {
-      console.log("could not sign in");
-    }
-    redirectTo?.startsWith("/") ? navigate(redirectTo) : navigate("/store");
+    mutate(new FormData(event.currentTarget));
+
+    // const isSignInSuccessful = signIn({
+    //   token: "d96b4a67-6f5d-43b8-8793-f1ad1832742d",
+    //   expiresIn: 24 * 60 * 30,
+    //   tokenType: "Bearer",
+    //   authState: {
+    //     token: "d96b4a67-6f5d-43b8-8793-f1ad1832742d",
+    //   },
+    // });
+    // if (!isSignInSuccessful) {
+    //   return;
+    // }
+    // redirectTo?.startsWith("/") ? navigate(redirectTo) : navigate("/store");
   };
 
   if (isAuthenticated()) return <Navigate to={"/store"} />;
@@ -139,14 +155,15 @@ export default function SignInSide() {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
+            <LoadingButton
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              loading={isLoading}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <MuiLink
               component={Link}
               to={`/signup?redirectTo=${redirectTo ?? "/"}`}
