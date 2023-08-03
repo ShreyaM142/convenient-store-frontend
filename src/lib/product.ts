@@ -20,7 +20,7 @@ export const makeProductQuery = (
   queryKey: ["product", productId],
   queryFn: async () => {
     const products = await api
-      .get<Product[]>(`/product//`)
+      .get<Product[]>(`/product/`)
       .then((resp) => resp.data);
     const foundProduct = products.find(
       (resp) => resp.id.toString() === productId,

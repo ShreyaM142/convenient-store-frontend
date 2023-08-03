@@ -33,7 +33,7 @@ function Products() {
     ["products", category],
     // () => categories?.find((c) => c.id.toString() === category)?.products,
     async () =>
-      (await api.get<Product[]>(`/product//`).then((resp) => resp.data)).filter(
+      (await api.get<Product[]>(`/product/`).then((resp) => resp.data)).filter(
         (resp) => resp.categoryId.toString() === category,
       ),
   );

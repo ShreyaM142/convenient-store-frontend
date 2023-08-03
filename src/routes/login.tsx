@@ -62,7 +62,7 @@ export default function SignInSide() {
           token: data.data.token,
           expiresIn: 24 * 60 * 30,
           tokenType: "Bearer",
-          authState: { token: data.data.token, userId: 1 },
+          authState: { token: data.data.token, userId: data.data.userId ?? 1 },
         });
         if (!isSignInSuccessful) {
           return;
