@@ -13,8 +13,8 @@ export type Category = {
 function useCategories() {
   return useQuery("categories", () =>
     api
-      .get<Category[]>("/category//", {
-        // .get<Category[]>("/category/list", {
+      // .get<Category[]>("/category//", {
+      .get<Category[]>("/category/list", {
         headers: {
           Accept: "*/*",
         },

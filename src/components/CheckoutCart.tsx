@@ -13,6 +13,7 @@ import { Cart, CartItem } from "../hooks/useCart";
 import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQueryClient } from "react-query";
 import { api } from "../lib/axios";
+import { randomImage } from "../lib/randomImage";
 
 export default function CheckoutCart(cart: Cart) {
   return (
@@ -31,14 +32,11 @@ export default function CheckoutCart(cart: Cart) {
   );
 }
 function CartItemCard({ cartItem }: { cartItem: CartItem }) {
-  const authUser = useAuthUser();
+  // const authUser = useAuthUser();
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(
-    (cartItem: CartItem) =>
-      api.delete(
-        `cart/delete/${cartItem.id}?token=${authUser && authUser()?.token}`,
-      ),
+    (cartItem: CartItem) => api.delete(`cart/delete/${cartItem.cartId}`),
     {
       onSuccess() {
         queryClient.invalidateQueries("cart");
@@ -60,7 +58,7 @@ function CartItemCard({ cartItem }: { cartItem: CartItem }) {
       variant="outlined"
     >
       <CardMedia
-        image={cartItem.product.imageURL}
+        image={randomImage(cartItem.product.name)}
         sx={{
           aspectRatio: 1,
           height: "100%",
@@ -69,7 +67,7 @@ function CartItemCard({ cartItem }: { cartItem: CartItem }) {
       />
       <Box flexGrow={1}>
         <Typography fontWeight={700}>{cartItem.product.name}</Typography>
-        <Typography>{cartItem.product.price}</Typography>
+        <Typography>${cartItem.product.price}</Typography>
       </Box>
 
       <IconButton

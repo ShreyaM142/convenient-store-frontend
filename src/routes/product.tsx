@@ -1,11 +1,15 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { Box, Button, Grid, Rating, Skeleton, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Typography } from "@mui/material";
 import { makeProductQuery } from "../lib/product";
+import { randomImage } from "../lib/randomImage";
+import { LoadingButton } from "@mui/lab";
+import { useAddToCart } from "../hooks/useAddToCart";
 
 function ProductPage() {
   const { productId } = useParams();
   const { data: product, isLoading } = useQuery(makeProductQuery(productId));
+  const { mutate, isLoading: isAddToCartLoading } = useAddToCart();
 
   if (!product && !isLoading) return null;
   return (
@@ -15,7 +19,7 @@ function ProductPage() {
           <Box display="flex" justifyContent="center">
             {product ? (
               <img
-                src={product?.imageURL}
+                src={randomImage(product.name)}
                 alt={product?.name}
                 width={300}
                 height={300}
@@ -42,15 +46,21 @@ function ProductPage() {
             >
               {product?.name ?? <Skeleton />}
             </Typography>
-            <Box display="flex" alignItems="center">
+            {/* <Box display="flex" alignItems="center">
               <Rating name="read-only" value={product?.rating.rate} readOnly />(
               {product?.rating.count})
-            </Box>
+            </Box> */}
             <Typography color="primary" fontWeight={700} fontSize={25}>
               {product?.price ? `$${product.price}` : <Skeleton width={50} />}
             </Typography>
             {product ? (
-              <Button variant="contained">Add to cart</Button>
+              <LoadingButton
+                onClick={() => product && mutate(product)}
+                variant="contained"
+                loading={isAddToCartLoading}
+              >
+                Add to cart
+              </LoadingButton>
             ) : (
               <Skeleton>
                 <Button variant="contained" />

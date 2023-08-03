@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import useCategories from "../hooks/useCategories";
+import { randomImage } from "../lib/randomImage";
 
 function Categories() {
   const { data = [undefined, undefined, undefined] } = useCategories();
@@ -25,7 +26,7 @@ function Categories() {
               >
                 {category ? (
                   <CardMedia
-                    image={category?.imageUrl}
+                    image={randomImage(category?.categoryName)}
                     sx={{ height: 200 }}
                     component="img"
                     loading="lazy"

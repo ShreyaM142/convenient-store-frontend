@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 // import { useAuthApi } from "../lib/axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import {
   Box,
   Card,
@@ -21,7 +21,8 @@ import useCategories from "../hooks/useCategories";
 import { Add } from "@mui/icons-material";
 import { Product } from "../lib/product";
 import { api } from "../lib/axios";
-import { useAuthUser } from "react-auth-kit";
+import { randomImage } from "../lib/randomImage";
+import { useAddToCart } from "../hooks/useAddToCart";
 
 function Products() {
   const { category = "" } = useParams();
@@ -30,8 +31,11 @@ function Products() {
   const { data: categories } = useCategories();
   const { data = [undefined, undefined, undefined], isLoading } = useQuery(
     ["products", category],
-    () => categories?.find((c) => c.id.toString() === category)?.products,
-    // api.get<Product[]>(`/product//`).then((resp) => resp.data),
+    // () => categories?.find((c) => c.id.toString() === category)?.products,
+    async () =>
+      (await api.get<Product[]>(`/product//`).then((resp) => resp.data)).filter(
+        (resp) => resp.categoryId.toString() === category,
+      ),
   );
 
   if (!data && !isLoading) return <div>Products</div>;
@@ -75,29 +79,13 @@ function Products() {
 export default Products;
 
 const ProductCard = ({ product }: { product?: Product }) => {
-  const authUser = useAuthUser();
-  const queryClient = useQueryClient();
-
-  const { mutate, isLoading: isAddToCartLoading } = useMutation(
-    (product: Product) => {
-      return api.post(`/cart/add?token=${authUser && authUser()?.token}`, {
-        id: 1,
-        productId: product.id,
-        quantity: 1,
-      });
-    },
-    {
-      onSuccess() {
-        queryClient.invalidateQueries("cart");
-      },
-    },
-  );
+  const { mutate, isLoading: isAddToCartLoading } = useAddToCart();
   return (
     <Card variant="outlined">
       <CardActionArea component={Link} to={`/store/products/${product?.id}`}>
         {product ? (
           <CardMedia
-            image={product?.imageURL}
+            image={randomImage(product.name)}
             sx={{
               backgroundSize: "contain",
               aspectRatio: 1,

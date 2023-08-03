@@ -4,7 +4,7 @@ import { Product } from "../lib/product";
 import { useAuthUser } from "react-auth-kit";
 
 export type CartItem = {
-  id: number;
+  cartId: number;
   quantity: number;
   product: Product;
 };
@@ -19,7 +19,7 @@ function useCart() {
 
   return useQuery(`cart`, () =>
     api
-      .get<Cart>(`cart/?token=${authUser && authUser()?.token}`)
+      .get<Cart>(`cart/${authUser && authUser()?.userId}`)
       .then((resp) => resp.data),
   );
 }

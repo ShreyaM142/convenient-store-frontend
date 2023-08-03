@@ -50,18 +50,19 @@ export default function SignInSide() {
         email: formData.get("email"),
         password: formData.get("password"),
       };
-      return api.post("/user/signIn", signupData);
+      return api.post("/user/signin", signupData);
+      // return api.post("/user/signIn", signupData);
     },
     {
       onSuccess(data) {
-        if (data.data.status !== "success") return;
-        // if (data.data.status !== "Signin Success") return;
+        // if (data.data.status !== "success") return;
+        if (data.data.status !== "Signin Success") return;
 
         const isSignInSuccessful = signIn({
           token: data.data.token,
           expiresIn: 24 * 60 * 30,
           tokenType: "Bearer",
-          authState: { token: data.data.token },
+          authState: { token: data.data.token, userId: 1 },
         });
         if (!isSignInSuccessful) {
           return;
