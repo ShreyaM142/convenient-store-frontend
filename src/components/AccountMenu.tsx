@@ -14,6 +14,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { useIsAuthenticated, useSignOut } from "react-auth-kit";
 import { Link, useLocation } from "react-router-dom";
+import CartMenu from "./Cart";
 
 export default function AccountMenu() {
   const isAuthenticated = useIsAuthenticated();
@@ -41,6 +42,7 @@ export default function AccountMenu() {
   }
   return (
     <>
+      <CartMenu />
       <Tooltip title="Account settings">
         <IconButton
           onClick={handleClick}
