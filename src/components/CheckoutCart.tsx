@@ -10,7 +10,6 @@ import {
 import { Remove } from "@mui/icons-material";
 // import { Product } from "../lib/product";
 import { Cart, CartItem } from "../hooks/useCart";
-import { useAuthUser } from "react-auth-kit";
 import { useMutation, useQueryClient } from "react-query";
 import { api } from "../lib/axios";
 import { randomImage } from "../lib/randomImage";
@@ -46,7 +45,7 @@ function CartItemCard({ cartItem }: { cartItem: CartItem }) {
 
   return (
     <Card
-      key={cartItem.id}
+      key={cartItem.cartId}
       sx={{
         height: 150,
         p: 2,
