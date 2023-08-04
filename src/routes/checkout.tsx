@@ -13,6 +13,7 @@ import CheckoutCart from "../components/CheckoutCart";
 import useCart, { Cart } from "../hooks/useCart";
 import { VisitStoreButton } from "../components/VisitStoreButton";
 import { Stack } from "@mui/material";
+import { useIsAuthenticated } from "react-auth-kit";
 
 function Copyright() {
   return (
@@ -40,6 +41,7 @@ function GetStepContent({ cart, step }: { step: number; cart: Cart }) {
 }
 
 export default function Checkout() {
+  const isAuthenticated = useIsAuthenticated();
   const { data, isLoading } = useCart();
 
   const [activeStep, setActiveStep] = React.useState(0);
@@ -52,9 +54,24 @@ export default function Checkout() {
     setActiveStep(activeStep - 1);
   };
 
-  if (isLoading) return <Typography>Loading your cart</Typography>;
+  if (!isAuthenticated())
+    return (
+      <Typography textAlign="center" my={10}>
+        You need to be logged in to view this page
+      </Typography>
+    );
+  if (isLoading)
+    return (
+      <Typography textAlign="center" my={10}>
+        Loading your cart
+      </Typography>
+    );
   if (!isLoading && !data)
-    return <Typography>There was a problem loading your cart</Typography>;
+    return (
+      <Typography textAlign="center" my={10}>
+        There was a problem loading your cart
+      </Typography>
+    );
 
   return (
     <React.Fragment>
